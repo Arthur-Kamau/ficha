@@ -47,18 +47,57 @@ Ficha uses a **Flutter-inspired Material 3 aesthetic** optimized for Desktop use
 
 ## 🛠️ Technical Stack
 
-- Tauri + React + Typescript
-- **Frontend:** React 19 + TypeScript
-- **Styling:** Tailwind CSS (Custom M3 Configuration)
+- **Backend:** Rust (Tauri) with native Linux process monitoring
+- **Frontend:** React + TypeScript
+- **Styling:** Tailwind CSS (Material 3 Design)
 - **Icons:** Lucide-React
-- **AI Engine:** @google/genai (Gemini 2.5/3 Flash)
-- **State Management:** React Hooks + Session Storage persistence
+- **Database:** SQLite (rusqlite)
+- **Authentication:** Linux PAM (optional)
+- **Process Termination:** SIGKILL via `/proc` filesystem scanning
 
-## 🔧 Installation (Linux/Ubuntu)
+## 🚀 Quick Start
 
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/ficha-app.git
+cd ficha-app
 
-## 📜 Security Disclaimer
-*Ficha is currently a security visualization and management interface. Real-world process termination requires a companion daemon written in C++ or Rust to interface directly with the Linux kernel via eBPF or auditd hooks.*
+# Install dependencies
+pnpm install
+
+# Run in development mode
+pnpm tauri dev
+
+# Build for distribution (with PAM auth)
+pnpm tauri build -- --features pam-auth
+```
+
+**📖 Full Documentation:**
+- [Quick Start Guide](QUICKSTART.md) - Get started in 5 minutes
+- [Build Guide](BUILD.md) - Create distributable binaries
+- [Implementation Details](IMPLEMENTATION.md) - Technical architecture
+
+## 📦 Installation
+
+### From Release (Recommended)
+
+1. Download the latest `.AppImage` or `.deb` from [Releases](https://github.com/yourusername/ficha-app/releases)
+2. Install the icon: `./install-icon.sh`
+3. Run the app
+
+### From Source
+
+See [BUILD.md](BUILD.md) for detailed build instructions.
+
+## 🔒 How It Works
+
+The daemon continuously scans `/proc` for new processes and immediately terminates (SIGKILL) any that match your protected watchlist when the shield is locked. When you unlock with your system password (PAM auth), monitoring is disabled and apps run normally.
+
+**Database:** `~/.local/share/com.ficha.app/ficha.db`
+
+## 📜 License
+
+This project is for educational and personal use. Use responsibly.
 
 ---
 **Developed for the Linux Power User.** 🐧🛡️
